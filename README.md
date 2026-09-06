@@ -1,2 +1,4 @@
-# telecom-bss-rag-assistant
-A Retrieval-Augmented Generation (RAG) assistant for answering basic Telecom BSS domain-related questions.
+# Enterprise RAG Knowledge Assistant
+
+A Retrieval-Augmented Generation (RAG) assistant for answering domain-specific questions using a grounded knowledge base.
+
