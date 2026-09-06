@@ -1,5 +1,10 @@
+"""Streamlit interface for the Telecom BSS Knowledge Assistant."""
+
 import streamlit as st
 from app.retrieval.pipeline import ask, build_teleco_assistant
+from app.logger import get_logger
+
+logger = get_logger(__name__)
 
 st.set_page_config(
     page_title="Telecom BSS Assistant",
@@ -16,19 +21,16 @@ st.markdown("""
         padding-bottom: 2rem;
         max-width: 1100px;
     }
-
     .main-title {
         font-size: 2.2rem;
         font-weight: 700;
         margin-bottom: 0.2rem;
     }
-
     .subtitle {
         color: #6b7280;
         font-size: 1rem;
         margin-bottom: 1.5rem;
     }
-
     .welcome-box {
         padding: 1.2rem;
         border-radius: 12px;
@@ -36,7 +38,6 @@ st.markdown("""
         background: #f8fafc;
         margin-bottom: 1.5rem;
     }
-
     .section-title {
         font-size: 0.9rem;
         font-weight: 600;
@@ -44,12 +45,10 @@ st.markdown("""
         margin-top: 1rem;
         margin-bottom: 0.5rem;
     }
-
     div[data-testid="stChatMessage"] {
         border-radius: 12px;
         padding: 0.5rem;
     }
-
     .status-box {
         padding: 0.8rem;
         border-radius: 10px;
@@ -73,7 +72,6 @@ st.markdown(
 # ---------- Sidebar ----------
 with st.sidebar:
     st.header("📚 BSS Knowledge")
-
     st.markdown(
         """
         This assistant can help with concepts such as:
@@ -91,7 +89,6 @@ with st.sidebar:
     )
 
     st.divider()
-
     st.subheader("💡 Try asking")
 
     suggestions = [
@@ -104,23 +101,32 @@ with st.sidebar:
 
     for suggestion in suggestions:
         if st.button(suggestion, use_container_width=True):
+            logger.info("Sidebar suggestion selected: %s", suggestion)
             st.session_state.pending_question = suggestion
 
     st.divider()
 
     if st.button("🗑️ Clear conversation", use_container_width=True):
+        logger.info("Conversation history cleared")
         st.session_state.messages = []
         st.rerun()
 
     st.divider()
-
     st.caption("Telecom BSS Knowledge Assistant")
     st.caption("Grounded responses • No unsupported answers")
 
 # ---------- Agent ----------
 @st.cache_resource(show_spinner="Setting up Telecom BSS Assistant...")
 def get_agent():
-    return build_teleco_assistant()
+    """Initialize and cache the Telecom BSS assistant."""
+    try:
+        logger.info("Initializing Telecom BSS assistant for Streamlit")
+        agent = build_teleco_assistant()
+        logger.info("Telecom BSS assistant initialized successfully")
+        return agent
+    except Exception:
+        logger.exception("Failed to initialize Telecom BSS assistant")
+        raise
 
 agent = get_agent()
 
@@ -164,6 +170,8 @@ if st.session_state.pending_question:
 
 # ---------- Process Question ----------
 if question:
+    logger.info("Processing user question: %s", question)
+
     st.session_state.messages.append({
         "role": "user",
         "content": question
@@ -174,7 +182,12 @@ if question:
 
     with st.chat_message("assistant"):
         with st.spinner("Searching the Telecom BSS knowledge base..."):
-            answer = ask(agent, question)
+            try:
+                answer = ask(agent, question)
+                logger.info("Assistant response generated successfully")
+            except Exception:
+                logger.exception("Failed to generate response for user question")
+                raise
 
         st.markdown(answer)
 
@@ -182,3 +195,4 @@ if question:
         "role": "assistant",
         "content": answer
     })
+
