@@ -14,6 +14,7 @@ from app.retrieval.vector_store import (
     get_retriver
 )
 from app.logger import get_logger
+from app.retrieval.tracing import check_langsmith_tracing
 
 logger = get_logger(__name__)
 
@@ -44,7 +45,7 @@ def build_teleco_assistant(file_path: str = setting.DOCUMENTS_LOCATION):
     """Build the telecom assistant by connecting the vector store, retriever, search tool, and LLM."""
     try:
         logger.info("Building telecom assistant")
-
+        check_langsmith_tracing()
         vector_store = build_vector_store_for_document(file_path)
         retriver = get_retriver(vector_store)
         search_tool = create_search_tool(retriver)

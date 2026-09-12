@@ -26,6 +26,12 @@ class Settings:
     JINA_API_KEY = get_required_env("JINA_API_KEY")
     JINA_EMBEDDING_MODEL = "jina-embeddings-v2-base-en"
 
+    # Tracing 
+    LANGSMITH_TRACING = get_required_env("LANGSMITH_TRACING")
+    LANGSMITH_ENDPOINT = get_required_env("LANGSMITH_ENDPOINT")
+    LANGSMITH_API_KEY = get_required_env("LANGSMITH_API_KEY")
+    LANGSMITH_PROJECT = get_required_env("LANGSMITH_PROJECT")
+
     # Documents location
     DOCUMENTS_LOCATION = os.path.join("Documents", "Telecom_BSS_Knowledge_Base.txt")
 
