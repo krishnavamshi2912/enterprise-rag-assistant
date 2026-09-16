@@ -1,198 +1,450 @@
-"""Streamlit interface for the Telecom BSS Knowledge Assistant."""
+"""Minimal Streamlit UI for Telecom BSS RAG Assistant."""
 
+import requests
 import streamlit as st
-from app.retrieval.pipeline import ask, build_teleco_assistant
+
 from app.logger import get_logger
+
 
 logger = get_logger(__name__)
 
+
+# ============================================================
+# CONFIG
+# ============================================================
+
+API_URL = "http://127.0.0.1:8000/query"
+HEALTH_URL = "http://127.0.0.1:8000/"
+
+
+# ============================================================
+# PAGE CONFIG
+# ============================================================
+
 st.set_page_config(
-    page_title="Telecom BSS Assistant",
+    page_title="Telecom BSS Assistant (Built with Publicly Available Data)",
     page_icon="📡",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
 
-# ---------- Custom CSS ----------
-st.markdown("""
-<style>
-    .block-container {
+
+# ============================================================
+# MINIMAL CSS
+# ============================================================
+
+st.markdown(
+    """
+    <style>
+
+    /* Main application */
+    .stApp {
+        background-color: #0b0f17;
+    }
+
+    .main .block-container {
+        max-width: 1050px;
         padding-top: 2rem;
-        padding-bottom: 2rem;
-        max-width: 1100px;
+        padding-bottom: 6rem;
     }
-    .main-title {
-        font-size: 2.2rem;
-        font-weight: 700;
-        margin-bottom: 0.2rem;
+
+
+    /* Sidebar */
+    section[data-testid="stSidebar"] {
+        background-color: #111827;
     }
-    .subtitle {
-        color: #6b7280;
-        font-size: 1rem;
-        margin-bottom: 1.5rem;
-    }
-    .welcome-box {
-        padding: 1.2rem;
-        border-radius: 12px;
-        border: 1px solid #e5e7eb;
-        background: #f8fafc;
-        margin-bottom: 1.5rem;
-    }
-    .section-title {
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: #6b7280;
-        margin-top: 1rem;
-        margin-bottom: 0.5rem;
-    }
-    div[data-testid="stChatMessage"] {
-        border-radius: 12px;
-        padding: 0.5rem;
-    }
-    .status-box {
-        padding: 0.8rem;
+
+    section[data-testid="stSidebar"] button {
         border-radius: 10px;
-        border: 1px solid #e5e7eb;
-        font-size: 0.9rem;
+        min-height: 44px;
     }
-</style>
-""", unsafe_allow_html=True)
 
-# ---------- Header ----------
-st.markdown(
-    '<div class="main-title">📡 Telecom BSS Assistant</div>',
-    unsafe_allow_html=True
+
+    /* Chat spacing */
+    [data-testid="stChatMessage"] {
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+
+    [data-testid="stChatMessage"] .stMarkdown {
+        font-size: 1rem;
+        line-height: 1.65;
+    }
+
+
+    /* Larger avatars */
+    [data-testid="stChatMessage"] [data-testid="chatAvatarIcon"] {
+        width: 52px !important;
+        height: 52px !important;
+        min-width: 52px !important;
+        min-height: 52px !important;
+        border-radius: 50% !important;
+    }
+
+
+    /* More space between avatar and text */
+    [data-testid="stChatMessage"] {
+        column-gap: 16px !important;
+    }
+
+
+    /* Chat input */
+    [data-testid="stChatInput"] {
+        padding-bottom: 12px;
+    }
+
+    [data-testid="stChatInput"] > div {
+        background-color: #171e2c;
+        border: 1px solid #39445a;
+        border-radius: 14px;
+    }
+
+    [data-testid="stChatInput"] textarea {
+        color: #f8fafc !important;
+        font-size: 1rem !important;
+    }
+
+    [data-testid="stChatInput"] textarea::placeholder {
+        color: #7d899e !important;
+    }
+
+
+    /* Hide unnecessary Streamlit decoration */
+    #MainMenu {
+        visibility: hidden;
+    }
+
+    footer {
+        visibility: hidden;
+    }
+
+    </style>
+    """,
+    unsafe_allow_html=True,
 )
 
-st.markdown(
-    '<div class="subtitle">AI-powered knowledge assistant for Telecom Business Support Systems</div>',
-    unsafe_allow_html=True
-)
 
-# ---------- Sidebar ----------
-with st.sidebar:
-    st.header("📚 BSS Knowledge")
-    st.markdown(
-        """
-        This assistant can help with concepts such as:
+# ============================================================
+# BACKEND
+# ============================================================
 
-        - Business Support Systems (BSS)
-        - Charging & Rating
-        - Billing & Invoicing
-        - Payments & Balances
-        - Recurring & Usage Charges
-        - Discounts & Taxes
-        - Collections
-        - Revenue Assurance
-        - Reconciliation
-        """
-    )
+def check_backend() -> bool:
+    """Check whether FastAPI backend is available."""
 
-    st.divider()
-    st.subheader("💡 Try asking")
-
-    suggestions = [
-        "What is billing?",
-        "What is a recurring charge?",
-        "What is charging?",
-        "What is the difference between billing and payment?",
-        "What is revenue assurance?"
-    ]
-
-    for suggestion in suggestions:
-        if st.button(suggestion, use_container_width=True):
-            logger.info("Sidebar suggestion selected: %s", suggestion)
-            st.session_state.pending_question = suggestion
-
-    st.divider()
-
-    if st.button("🗑️ Clear conversation", use_container_width=True):
-        logger.info("Conversation history cleared")
-        st.session_state.messages = []
-        st.rerun()
-
-    st.divider()
-    st.caption("Telecom BSS Knowledge Assistant")
-    st.caption("Grounded responses • No unsupported answers")
-
-# ---------- Agent ----------
-@st.cache_resource(show_spinner="Setting up Telecom BSS Assistant...")
-def get_agent():
-    """Initialize and cache the Telecom BSS assistant."""
     try:
-        logger.info("Initializing Telecom BSS assistant for Streamlit")
-        agent = build_teleco_assistant()
-        logger.info("Telecom BSS assistant initialized successfully")
-        return agent
+        response = requests.get(
+            HEALTH_URL,
+            timeout=3,
+        )
+
+        return response.status_code == 200
+
+    except requests.RequestException:
+        return False
+
+
+def ask_api(question: str) -> str:
+    """Send question to FastAPI backend."""
+
+    try:
+        response = requests.post(
+            API_URL,
+            json={
+                "question": question
+            },
+            timeout=120,
+        )
+
+        response.raise_for_status()
+
+        data = response.json()
+
+        if data.get("status") == "error":
+            raise RuntimeError(
+                data.get(
+                    "answer",
+                    "Backend returned an error.",
+                )
+            )
+
+        answer = data.get("answer")
+
+        if not answer:
+            raise RuntimeError(
+                "Backend returned an empty answer."
+            )
+
+        return answer
+
     except Exception:
-        logger.exception("Failed to initialize Telecom BSS assistant")
+        logger.exception(
+            "FastAPI request failed"
+        )
         raise
 
-agent = get_agent()
 
-# ---------- Session State ----------
+# ============================================================
+# SESSION STATE
+# ============================================================
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-if "pending_question" not in st.session_state:
-    st.session_state.pending_question = None
+if "quick_question" not in st.session_state:
+    st.session_state.quick_question = None
 
-# ---------- Welcome ----------
+
+# ============================================================
+# SIDEBAR
+# ============================================================
+
+with st.sidebar:
+
+    st.title("📚 BSS Knowledge")
+
+    st.write("📡 Business Support Systems")
+    st.write("💰 Rating & Charging")
+    st.write("🧾 Billing & Invoicing")
+    st.write("📦 Products & Subscriptions")
+    st.write("💳 Payments & Revenue")
+
+    st.divider()
+
+    st.subheader("💡 Quick Questions")
+
+    quick_questions = [
+        "What is BSS?",
+        "What is rating?",
+        "What is charging?",
+        "What is billing?",
+        "What is a recurring charge?",
+    ]
+
+    for index, quick_question in enumerate(
+        quick_questions
+    ):
+
+        if st.button(
+            quick_question,
+            key=f"quick_question_{index}",
+            use_container_width=True,
+        ):
+
+            st.session_state.quick_question = (
+                quick_question
+            )
+
+            st.rerun()
+
+    st.divider()
+
+    # --------------------------------------------------------
+    # BACKEND STATUS
+    # --------------------------------------------------------
+
+    if check_backend():
+        st.success("🟢 Backend online")
+    else:
+        st.error("🔴 Backend offline")
+
+    st.divider()
+
+    # --------------------------------------------------------
+    # CLEAR CHAT
+    # --------------------------------------------------------
+
+    if st.button(
+        "🗑️ Clear conversation",
+        key="clear_chat",
+        use_container_width=True,
+    ):
+
+        st.session_state.messages = []
+        st.session_state.quick_question = None
+
+        st.rerun()
+
+
+# ============================================================
+# HEADER
+# ============================================================
+
+st.title("📡 Telecom BSS Assistant (Built with Publicly Available Data)")
+
+st.caption(
+    "RAG-powered knowledge assistant · Telecom BSS"
+)
+
+st.divider()
+
+
+# ============================================================
+# WELCOME
+# ============================================================
+
 if not st.session_state.messages:
+
     st.markdown(
-        """
-        <div class="welcome-box">
-            <h4>👋 Welcome!</h4>
-            <p>
-                Ask a question about Telecom BSS concepts and I'll answer
-                using the available Telecom knowledge base.
-            </p>
-            <p>
-                <b>Example:</b> What is billing?
-            </p>
-        </div>
-        """,
-        unsafe_allow_html=True
+        "### 👋 Welcome to the Telecom BSS Assistant"
     )
 
-# ---------- Chat History ----------
+    st.write(
+        "Ask questions about **BSS, rating, charging, "
+        "billing, subscriptions, payments, and revenue "
+        "management.**"
+    )
+
+    st.write("")
+
+
+# ============================================================
+# CHAT HISTORY
+# ============================================================
+
 for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
 
-# ---------- Question ----------
-question = st.chat_input("Ask a question about Telecom BSS...")
+    if message["role"] == "user":
 
-# Handle sidebar suggestion
-if st.session_state.pending_question:
-    question = st.session_state.pending_question
-    st.session_state.pending_question = None
+        with st.chat_message(
+            "user",
+            avatar="👤",
+        ):
 
-# ---------- Process Question ----------
+            st.markdown(
+                message["content"]
+            )
+
+    else:
+
+        with st.chat_message(
+            "assistant",
+            avatar="🤖",
+        ):
+
+            st.markdown(
+                message["content"]
+            )
+
+
+# ============================================================
+# CHAT INPUT
+# ============================================================
+
+question = st.chat_input(
+    "Ask a Telecom BSS question..."
+)
+
+
+# ============================================================
+# QUICK QUESTION
+# ============================================================
+
+if st.session_state.quick_question:
+
+    question = st.session_state.quick_question
+
+    st.session_state.quick_question = None
+
+
+# ============================================================
+# PROCESS QUESTION
+# ============================================================
+
 if question:
-    logger.info("Processing user question: %s", question)
 
-    st.session_state.messages.append({
-        "role": "user",
-        "content": question
-    })
+    logger.info(
+        "Processing question: %s",
+        question,
+    )
 
-    with st.chat_message("user"):
+    # --------------------------------------------------------
+    # USER MESSAGE
+    # --------------------------------------------------------
+
+    st.session_state.messages.append(
+        {
+            "role": "user",
+            "content": question,
+        }
+    )
+
+    with st.chat_message(
+        "user",
+        avatar="👤",
+    ):
+
         st.markdown(question)
 
-    with st.chat_message("assistant"):
-        with st.spinner("Searching the Telecom BSS knowledge base..."):
-            try:
-                answer = ask(agent, question)
-                logger.info("Assistant response generated successfully")
-            except Exception:
-                logger.exception("Failed to generate response for user question")
-                raise
 
-        st.markdown(answer)
+    # --------------------------------------------------------
+    # CHECK BACKEND
+    # --------------------------------------------------------
 
-    st.session_state.messages.append({
-        "role": "assistant",
-        "content": answer
-    })
+    if not check_backend():
 
+        answer = (
+            "The FastAPI backend is currently unavailable. "
+            "Please make sure the FastAPI server is running "
+            "on port 8000."
+        )
+
+        with st.chat_message(
+            "assistant",
+            avatar="🤖",
+        ):
+
+            st.error(answer)
+
+
+    else:
+
+        # ----------------------------------------------------
+        # CALL FASTAPI
+        # ----------------------------------------------------
+
+        with st.chat_message(
+            "assistant",
+            avatar="🤖",
+        ):
+
+            with st.spinner(
+                "🔎 Searching BSS knowledge..."
+            ):
+
+                try:
+
+                    answer = ask_api(
+                        question
+                    )
+
+                    st.markdown(answer)
+
+                    logger.info(
+                        "Assistant response received"
+                    )
+
+                except Exception:
+
+                    logger.exception(
+                        "Assistant request failed"
+                    )
+
+                    answer = (
+                        "I couldn't connect to the "
+                        "Telecom BSS backend. Please "
+                        "check the FastAPI server."
+                    )
+
+                    st.error(answer)
+
+
+    # --------------------------------------------------------
+    # SAVE ASSISTANT RESPONSE
+    # --------------------------------------------------------
+
+    st.session_state.messages.append(
+        {
+            "role": "assistant",
+            "content": answer,
+        }
+    )
