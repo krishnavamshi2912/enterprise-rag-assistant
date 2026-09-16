@@ -56,7 +56,9 @@ class Settings:
     CHUNK_OVERLAP = 100
 
     # Retrieval results
-    TOP_K = 2
+    TOP_K = 8
+    RERANK_TOP_K = 4
+    RERANKER_MODEL = "ms-marco-TinyBERT-L-2-v2"
 
 setting = Settings()
 logger.info("Application configuration loaded successfully")

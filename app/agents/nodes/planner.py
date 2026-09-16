@@ -3,7 +3,6 @@ from app.logger import get_logger
 from app.retrieval.llm import get_llm
 
 logger = get_logger(__name__)
-
 llm = get_llm()
 
 SIMPLE_RESPONSES = {
@@ -11,6 +10,12 @@ SIMPLE_RESPONSES = {
     "thanks": "You're welcome!",
     "goodbye": "Goodbye!",
 }
+
+DOMAIN_REJECTION_RESPONSE = (
+    "I can help with questions related to Telecom BSS, such as "
+    "rating, charging, billing, mediation, subscriptions, invoices, "
+    "payments, and related concepts."
+)
 
 GREETING_WORDS = {
     "hi",
@@ -44,6 +49,7 @@ HISTORY_KEYWORDS = [
     "previous three questions",
 ]
 
+
 def _is_greeting(message: str) -> bool:
     """Check whether the message is a greeting, optionally followed by a name."""
     words = message.split()
@@ -59,19 +65,16 @@ def _is_greeting(message: str) -> bool:
 
     return False
 
+
 def _is_thanks(message: str) -> bool:
     """Check whether the message is a thank-you message."""
-    return any(
-        message.startswith(phrase)
-        for phrase in THANKS_PHRASES
-    )
+    return any(message.startswith(phrase) for phrase in THANKS_PHRASES)
+
 
 def _is_goodbye(message: str) -> bool:
     """Check whether the message is a goodbye message."""
-    return any(
-        message.startswith(phrase)
-        for phrase in GOODBYE_PHRASES
-    )
+    return any(message.startswith(phrase) for phrase in GOODBYE_PHRASES)
+
 
 def _get_history_answer(messages: list, message: str) -> str:
     """Return an answer for questions about previous user messages."""
@@ -99,10 +102,12 @@ def _get_history_answer(messages: list, message: str) -> str:
         for index, question in enumerate(questions, start=1)
     )
 
+
 def planner_node(state: AgentState) -> dict:
-    """Analyze the query and decide whether retrieval is required."""
+    """Analyze the query and decide whether Telecom BSS retrieval is required."""
     messages = state["messages"]
     user_message = messages[-1]["content"].strip()
+
     normalized_message = user_message.lower()
     normalized_message = " ".join(normalized_message.split())
 
@@ -110,77 +115,75 @@ def planner_node(state: AgentState) -> dict:
         logger.info("Simple greeting handled directly | question=%s", user_message)
         return {
             "route": "direct",
-            "answer": SIMPLE_RESPONSES["greeting"]
+            "answer": SIMPLE_RESPONSES["greeting"],
         }
 
     if _is_thanks(normalized_message):
         logger.info("Simple thanks handled directly | question=%s", user_message)
         return {
             "route": "direct",
-            "answer": SIMPLE_RESPONSES["thanks"]
+            "answer": SIMPLE_RESPONSES["thanks"],
         }
 
     if _is_goodbye(normalized_message):
         logger.info("Simple goodbye handled directly | question=%s", user_message)
         return {
             "route": "direct",
-            "answer": SIMPLE_RESPONSES["goodbye"]
+            "answer": SIMPLE_RESPONSES["goodbye"],
         }
 
     if any(keyword in normalized_message for keyword in HISTORY_KEYWORDS):
         answer = _get_history_answer(messages, normalized_message)
-
         logger.info("History query handled directly | question=%s", user_message)
-
         return {
             "route": "direct",
-            "answer": answer
+            "answer": answer,
         }
 
     history = ""
 
-    for message in messages[:-1]:
+    for message in messages[-4:-1]:
         role = "User" if message["role"] == "user" else "Assistant"
         history += f"{role}: {message['content']}\n"
 
     prompt = f"""
-You are an intelligent Planner for a Telecom BSS assistant.
+Classify the latest user message for a Telecom BSS assistant.
 
-Analyze the conversation history and the latest user message.
-
-CONVERSATION HISTORY:
+Conversation history:
 {history}
 
-LATEST USER MESSAGE:
+User message:
 "{user_message}"
 
-Decide whether the latest message can be answered using only the conversation
-history or whether Telecom BSS knowledge retrieval is required.
+Return ONLY one:
 
-Return ONLY one of these two values:
-
-CONVERSATIONAL
 TECHNICAL
+OUT_OF_DOMAIN
 
-Use CONVERSATIONAL for:
-- Casual conversation
-- Questions that can be answered using the conversation history
+TECHNICAL = Telecom BSS topics or follow-up questions related to Telecom BSS.
+OUT_OF_DOMAIN = anything unrelated to Telecom BSS.
 
-Use TECHNICAL for:
-- Telecom BSS questions
-- Questions about rating, charging, billing, mediation, products,
-  subscriptions, invoices, payments, revenue management, etc.
-- Questions requiring information from the Telecom BSS knowledge base
+Examples:
+"What is rating?" -> TECHNICAL
+"Explain billing" -> TECHNICAL
+"What is quantum computing?" -> OUT_OF_DOMAIN
+"Write Python code" -> OUT_OF_DOMAIN
 """
 
     response = llm.invoke(prompt)
     route = response.content.strip().upper()
 
-    if route not in {"CONVERSATIONAL", "TECHNICAL"}:
-        route = "TECHNICAL"
+    if route not in {"TECHNICAL", "OUT_OF_DOMAIN"}:
+        route = "OUT_OF_DOMAIN"
 
     logger.info("Planner route=%s | question=%s", route, user_message)
 
+    if route == "OUT_OF_DOMAIN":
+        return {
+            "route": "out_of_domain",
+            "answer": DOMAIN_REJECTION_RESPONSE,
+        }
+
     return {
-        "route": route.lower()
+        "route": "technical",
     }

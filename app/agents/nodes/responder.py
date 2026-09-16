@@ -3,8 +3,8 @@ from app.logger import get_logger
 from app.retrieval.llm import get_llm
 
 logger = get_logger(__name__)
-
 llm = get_llm()
+
 
 def responder_node(state: AgentState) -> dict:
     """Generate the final response using conversation history and retrieved context."""
@@ -19,43 +19,35 @@ def responder_node(state: AgentState) -> dict:
 
     question = messages[-1]["content"] if messages else ""
 
-    if route == "conversational":
-        prompt = f"""
-        You are a helpful Telecom BSS assistant.
+    prompt = f"""
+You are a Telecom BSS knowledge assistant.
 
-        Answer the user's current message using the conversation history.
+Answer the user's current question using ONLY the provided Telecom BSS context
+and relevant conversation history.
 
-        CONVERSATION HISTORY:
-        {history}
+CONVERSATION HISTORY:
+{history}
 
-        CURRENT USER MESSAGE:
-        {question}
+TELECOM BSS CONTEXT:
+{context}
 
-        If the user asks about a previous question or message, use the conversation
-        history to answer it directly.
+CURRENT USER QUESTION:
+{question}
 
-        Respond naturally and concisely.
-        """
-    else:
-        prompt = f"""
-        You are a Telecom BSS assistant.
-
-        Answer the user's question using the provided Telecom BSS context.
-
-        CONVERSATION HISTORY:
-        {history}
-
-        TELECOM BSS CONTEXT:
-        {context}
-
-        CURRENT USER QUESTION:
-        {question}
-
-        Use the provided context to answer the question.
-
-        If the context does not contain enough information, clearly say that you
-        do not have enough information.
-        """
+RULES:
+1. Use the provided context as the source of truth.
+2. Do not add facts, examples, algorithms, rules, or technical details that are
+   not supported by the provided context.
+3. You may use conversation history to understand follow-up questions, but do not
+   use previous answers as a source of new factual information.
+4. If the provided context does not contain enough information to answer the
+   question, clearly say that the information is not available in the provided
+   Telecom BSS context.
+5. Do not guess or fill missing information using your general knowledge.
+6. Answer directly and concisely.
+7. Use simple Markdown with headings or bullet points when useful.
+8. Avoid Markdown tables unless the user explicitly asks for a table.
+"""
 
     response = llm.invoke(prompt)
 
