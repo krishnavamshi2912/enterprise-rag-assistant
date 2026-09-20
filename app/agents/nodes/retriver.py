@@ -7,11 +7,11 @@ logger = get_logger(__name__)
 
 def retriever_node(state: dict, retriever) -> dict:
     """Retrieve and rerank relevant Telecom BSS documents."""
-    question = state["messages"][-1]["content"]
+    retrieval_query = state["retrieval_query"]
 
-    logger.info("Retrieving context | question=%s", question)
+    logger.info("Retrieving context | query=%s", retrieval_query)
 
-    documents = retriever.invoke(question)
+    documents = retriever.invoke(retrieval_query)
 
     logger.info("Retrieved documents=%d", len(documents))
 
@@ -27,7 +27,7 @@ def retriever_node(state: dict, retriever) -> dict:
         )
 
     reranked_documents = rerank_documents(
-        question,
+        retrieval_query,
         documents,
         top_k=setting.RERANK_TOP_K,
     )
@@ -41,15 +41,8 @@ def retriever_node(state: dict, retriever) -> dict:
     for index, document in enumerate(reranked_documents, start=1):
         content = document.page_content.strip()
 
-        # logger.info(
-        #     "Selected chunk %d | characters=%d | content=%s",
-        #     index,
-        #     len(content),
-        #     content[:300].replace("\n", " "),
-        # )
-
         logger.info(
-            "Selected chunk %d | characters=%d ",
+            "Selected chunk %d | characters=%d",
             index,
             len(content),
         )

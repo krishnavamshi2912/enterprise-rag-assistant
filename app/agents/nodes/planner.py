@@ -1,9 +1,23 @@
+from typing import Literal
+from pydantic import BaseModel, Field
+
 from app.agents.state import AgentState
 from app.logger import get_logger
 from app.retrieval.llm import get_llm
 
 logger = get_logger(__name__)
 llm = get_llm()
+
+
+class PlannerDecision(BaseModel):
+    """Structured output returned by the planner LLM."""
+    route: Literal["TECHNICAL", "OUT_OF_DOMAIN"]
+    retrieval_query: str = Field(
+        description="Short retrieval query for semantic search."
+    )
+
+
+planner_llm = llm.with_structured_output(PlannerDecision)
 
 SIMPLE_RESPONSES = {
     "greeting": "Hello! How can I help you with Telecom BSS?",
@@ -104,7 +118,7 @@ def _get_history_answer(messages: list, message: str) -> str:
 
 
 def planner_node(state: AgentState) -> dict:
-    """Analyze the query and decide whether Telecom BSS retrieval is required."""
+    """Classify the query and create a retrieval query for technical questions."""
     messages = state["messages"]
     user_message = messages[-1]["content"].strip()
 
@@ -116,6 +130,7 @@ def planner_node(state: AgentState) -> dict:
         return {
             "route": "direct",
             "answer": SIMPLE_RESPONSES["greeting"],
+            "retrieval_query": "",
         }
 
     if _is_thanks(normalized_message):
@@ -123,6 +138,7 @@ def planner_node(state: AgentState) -> dict:
         return {
             "route": "direct",
             "answer": SIMPLE_RESPONSES["thanks"],
+            "retrieval_query": "",
         }
 
     if _is_goodbye(normalized_message):
@@ -130,6 +146,7 @@ def planner_node(state: AgentState) -> dict:
         return {
             "route": "direct",
             "answer": SIMPLE_RESPONSES["goodbye"],
+            "retrieval_query": "",
         }
 
     if any(keyword in normalized_message for keyword in HISTORY_KEYWORDS):
@@ -138,52 +155,65 @@ def planner_node(state: AgentState) -> dict:
         return {
             "route": "direct",
             "answer": answer,
+            "retrieval_query": "",
         }
 
     history = ""
-
     for message in messages[-4:-1]:
         role = "User" if message["role"] == "user" else "Assistant"
         history += f"{role}: {message['content']}\n"
 
     prompt = f"""
-Classify the latest user message for a Telecom BSS assistant.
+    You are a planner for a Telecom BSS RAG assistant.
 
-Conversation history:
-{history}
+    Classify the latest user message as:
+    - TECHNICAL: Telecom BSS question or relevant follow-up.
+    - OUT_OF_DOMAIN: unrelated question.
 
-User message:
-"{user_message}"
+    For technical questions, identify the main technical concept and use that as the retrieval query. 
+    Do not include generic domain words unless they are necessary to distinguish the concept.
 
-Return ONLY one:
+    Rules:
+    - Remove conversational filler.
+    - Preserve the user's specific topic and intent.
+    - Do not introduce new concepts.
+    - Avoid repeating "Telecom BSS" when unnecessary.
+    - Use conversation history to resolve follow-ups.
+    - For OUT_OF_DOMAIN, retrieval_query must be empty.
 
-TECHNICAL
-OUT_OF_DOMAIN
+    Conversation history:
+    {history}
 
-TECHNICAL = Telecom BSS topics or follow-up questions related to Telecom BSS.
-OUT_OF_DOMAIN = anything unrelated to Telecom BSS.
+    User message:
+    "{user_message}"
+    """
 
-Examples:
-"What is rating?" -> TECHNICAL
-"Explain billing" -> TECHNICAL
-"What is quantum computing?" -> OUT_OF_DOMAIN
-"Write Python code" -> OUT_OF_DOMAIN
-"""
+    decision = planner_llm.invoke(prompt)
 
-    response = llm.invoke(prompt)
-    route = response.content.strip().upper()
-
-    if route not in {"TECHNICAL", "OUT_OF_DOMAIN"}:
-        route = "OUT_OF_DOMAIN"
-
-    logger.info("Planner route=%s | question=%s", route, user_message)
+    route = decision.route
+    retrieval_query = decision.retrieval_query.strip()
 
     if route == "OUT_OF_DOMAIN":
+        logger.info(
+            "Planner route=OUT_OF_DOMAIN | question=%s",
+            user_message,
+        )
         return {
             "route": "out_of_domain",
             "answer": DOMAIN_REJECTION_RESPONSE,
+            "retrieval_query": "",
         }
+
+    if not retrieval_query:
+        retrieval_query = user_message
+
+    logger.info(
+        "Planner route=TECHNICAL | retrieval_query=%s | question=%s",
+        retrieval_query,
+        user_message,
+    )
 
     return {
         "route": "technical",
+        "retrieval_query": retrieval_query,
     }

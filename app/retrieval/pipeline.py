@@ -72,15 +72,13 @@ def ask(graph, question: str) -> str:
         logger.info("Processing user question: %s", question)
 
         messages = chat_history + [
-            {
-                "role": "user",
-                "content": question
-            }
+            {"role": "user", "content": question}
         ]
 
         response = graph.invoke({
             "messages": messages,
             "route": "",
+            "retrieval_query": "",
             "context": "",
             "answer": ""
         })
@@ -88,14 +86,8 @@ def ask(graph, question: str) -> str:
         answer = response["answer"]
 
         chat_history.extend([
-            {
-                "role": "user",
-                "content": question
-            },
-            {
-                "role": "assistant",
-                "content": answer
-            }
+            {"role": "user", "content": question},
+            {"role": "assistant", "content": answer}
         ])
 
         logger.info("User question processed successfully")

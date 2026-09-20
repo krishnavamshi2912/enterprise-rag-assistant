@@ -5,3 +5,4 @@ class AgentState(TypedDict):
     route: str
     context: str
     answer: str
+    retrieval_query: str
