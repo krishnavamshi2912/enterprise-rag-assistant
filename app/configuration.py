@@ -39,7 +39,10 @@ class Settings:
     DOCUMENTS_LOCATION = os.path.join("Documents", "Telecom_BSS_Knowledge_Base.txt")
 
     # Vector store
-    VECTOR_STORE_PATH = os.path.join("Documents", "faiss_index")
+    #VECTOR_STORE_PATH = os.path.join("Documents", "faiss_index")
+    QDRANT_URL = get_required_env("QDRANT_CLUSTER_ENDPOINT")
+    QDRANT_API_KEY = get_required_env("QDRANT_API_KEY")
+    QDRANT_COLLECTION_NAME = get_required_env("QDRANT_COLLECTION_NAME")
 
     # Chunking size and overlap config
     CHUNK_SIZE = 800
