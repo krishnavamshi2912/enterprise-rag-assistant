@@ -22,6 +22,9 @@ class Settings:
     GROQ_API_KEY = get_required_env("GROQ_API_KEY")
     LLM_GROQ_MODEL = "openai/gpt-oss-120b"
 
+    # Guard Model 
+    GUARD_MODEL = "openai/gpt-oss-safeguard-20b"
+
     # JINA Embeddings and models
     JINA_API_KEY = get_required_env("JINA_API_KEY")
     JINA_EMBEDDING_MODEL = "jina-embeddings-v2-base-en"

@@ -3,7 +3,6 @@
 from app.configuration import setting
 from app.ingestion.loader import load_file
 from app.ingestion.chunking import chunk_documents
-from app.retrieval.llm import get_llm
 from app.retrieval.vector_store import (
     vector_store_build,
     save_vector_store,
@@ -80,15 +79,17 @@ def ask(graph, question: str) -> str:
             "route": "",
             "retrieval_query": "",
             "context": "",
-            "answer": ""
+            "answer": "",
+            "blocked": False
         })
 
         answer = response["answer"]
 
-        chat_history.extend([
-            {"role": "user", "content": question},
-            {"role": "assistant", "content": answer}
-        ])
+        if not response["blocked"]:
+            chat_history.extend([
+                {"role": "user", "content": question},
+                {"role": "assistant", "content": answer}
+            ])
 
         logger.info("User question processed successfully")
         return answer

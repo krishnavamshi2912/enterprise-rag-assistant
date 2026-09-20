@@ -6,3 +6,4 @@ class AgentState(TypedDict):
     context: str
     answer: str
     retrieval_query: str
+    blocked: bool
