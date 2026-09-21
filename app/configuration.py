@@ -19,9 +19,13 @@ class Settings:
     """Store configuration values used across the Telecom BSS RAG application."""
 
     # Groq LLM configuration and models
-    GROQ_API_KEY = get_required_env("GROQ_API_KEY")
+    # GROQ_API_KEY = get_required_env("GROQ_API_KEY")               ## Migrated the local LLM configuration to Portkey Gateway configuration 
     LLM_GROQ_MODEL = "openai/gpt-oss-120b"
 
+    # Portkey LLM configuration 
+    PORTKEY_API_KEY = get_required_env("PORTKEY_API_KEY")
+    PORTKEY_PROVIDER = get_required_env("PORTKEY_PROVIDER")
+    
     # Guard Model 
     GUARD_MODEL = "openai/gpt-oss-safeguard-20b"
 

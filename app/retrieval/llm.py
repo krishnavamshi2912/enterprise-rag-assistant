@@ -1,31 +1,17 @@
 """Provides the LLM used by the RAG application."""
 
-from langchain_groq import ChatGroq
-from app.configuration import setting
+from langchain_openai import ChatOpenAI
+from app.gateway.gateway import get_gateway_llm, get_gateway_guardrail_llm
 from app.logger import get_logger
 
 logger = get_logger(__name__)
 
-def get_llm() -> ChatGroq:
-    """Initialize and return the configured llm chat model."""
-    try:
-        logger.info("Initializing LLM: %s", setting.LLM_GROQ_MODEL)
-        llm = ChatGroq(model=setting.LLM_GROQ_MODEL,temperature=0)
-        logger.info("LLM initialized successfully")
-        return llm
-    
-    except Exception:
-        logger.exception("Failed to initialize LLM")
-        raise
+def get_llm() -> ChatOpenAI:
+    """Return the main LLM through the Portkey gateway."""
+    logger.info("Initializing main LLM through Portkey")
+    return get_gateway_llm()
 
-def get_guard_llm() -> ChatGroq:
-    """Initialize and return the configured guardrail LLM."""
-    try:
-        logger.info("Initializing guardrail LLM: %s", setting.GUARD_MODEL)
-        llm = ChatGroq(model=setting.GUARD_MODEL,temperature=0,model_kwargs={"response_format": {"type": "json_object"}},)
-        logger.info("Guardrail LLM initialized successfully")
-        return llm
-
-    except Exception:
-        logger.exception("Failed to initialize guardrail LLM")
-        raise
+def get_guard_llm() -> ChatOpenAI:
+    """Return the guardrail LLM through the Portkey gateway."""
+    logger.info("Initializing guardrail LLM through Portkey")
+    return get_gateway_guardrail_llm()
