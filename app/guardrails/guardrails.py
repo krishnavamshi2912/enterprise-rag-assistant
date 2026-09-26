@@ -3,6 +3,7 @@ import json
 from app.logger import get_logger
 from app.retrieval.llm import get_guard_llm
 from app.agents.state import AgentState
+from app.utils.query_classifier import is_deterministic_query
 
 logger = get_logger(__name__)
 
@@ -95,6 +96,13 @@ def _check_safety(text: str, policy: str) -> tuple[bool, str]:
 
 def check_input(question: str) -> tuple[bool, str]:
     """Check the user's question before the agent processes it."""
+    if is_deterministic_query(question):
+        logger.info(
+            "Input guard bypassed LLM | deterministic query | question=%s",
+            question,
+        )
+        return True, "Deterministic safe query"
+
     is_safe, reason = _check_safety(question, INPUT_POLICY)
 
     if not is_safe:
@@ -117,7 +125,11 @@ def check_output(answer: str, context: str) -> tuple[bool, str]:
     """
     is_safe, reason = _check_safety(output, OUTPUT_POLICY)
     if not is_safe:
-        logger.warning("Output guard BLOCKED answer | reason=%s",reason,)
+        logger.warning(
+            "Output guard BLOCKED answer | reason=%s",
+            reason,
+        )
+
     return is_safe, reason
 
 def input_guardrail_node(state: AgentState) -> dict:
