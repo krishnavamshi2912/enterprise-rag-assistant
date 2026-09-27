@@ -1,0 +1,1428 @@
+1. WHAT IS BSS
+==============
+
+Business Support Systems (BSS) are the business-facing systems and capabilities used by a telecommunications provider to manage customers, products, subscriptions, orders, charging, billing, payments, and related commercial processes.
+
+The main purpose of BSS is to support the commercial side of telecom services. BSS helps a provider answer questions such as:
+
+- Who is the customer?
+- What services does the customer have?
+- Which product or plan is subscribed to?
+- What price and discounts apply?
+- What usage should be charged?
+- What amount should be billed?
+- Has the customer paid?
+- Is an account overdue?
+- Should a financial correction be made?
+
+Major BSS capabilities commonly include:
+
+- Customer and account management
+- Product and offer management
+- Subscription management
+- Order management
+- Charging
+- Rating
+- Billing
+- Payment management
+- Dispute and adjustment management
+- Collections
+- Revenue assurance
+- Reconciliation
+
+BSS is primarily concerned with the customer and business view of telecom services. It does not normally operate the physical network itself. Instead, it works with operational systems and network-related systems to make services commercially available and financially manageable.
+
+Customer/business perspective
+
+From a customer's perspective, BSS-related processes are visible through activities such as purchasing a plan, changing a subscription, receiving a bill, making a payment, or raising a billing dispute.
+
+For example, imagine a fictional telecom provider offering a mobile plan called "Connect 20". The plan costs 20 currency units per month and includes a defined amount of data and voice usage.
+
+A customer orders Connect 20. BSS can create or update the customer's account, create the subscription, process the order, apply the commercial terms, and arrange for the resulting service request to be handled operationally. Later, the customer's usage is processed for charging and billing. At the end of the billing period, the applicable charges are consolidated into an invoice.
+
+BSS therefore connects commercial products and customer relationships with financial outcomes.
+
+2. WHAT IS OSS
+==============
+
+Operations Support Systems (OSS) are systems and capabilities used to support the operational management of telecommunications networks and services.
+
+The purpose of OSS is to help a telecom provider plan, provision, monitor, configure, maintain, and troubleshoot network and service resources.
+
+Major OSS capabilities can include:
+
+- Network and resource inventory
+- Service inventory
+- Service provisioning
+- Network configuration
+- Fault management
+- Performance monitoring
+- Service assurance
+- Network discovery
+- Resource allocation
+- Operational workflow management
+
+OSS is primarily concerned with whether a requested service can be technically delivered and whether the supporting network and resources are operating correctly.
+
+For example, suppose a fictional customer orders a mobile data service. BSS may capture the customer's order and commercial subscription information. The operational part of the request may then be passed to OSS-related processes. OSS can determine or coordinate the technical actions needed to provision the service on the relevant network resources.
+
+If a network component later develops a problem, OSS capabilities can help detect and manage the operational issue.
+
+The distinction can be summarized simply:
+
+- BSS focuses mainly on the business and customer relationship.
+- OSS focuses mainly on network and service operations.
+
+The two areas must cooperate because a commercial service purchased by a customer eventually has to be technically delivered and operationally supported.
+
+3. BSS VS OSS
+=============
+
+BSS and OSS serve different but connected purposes.
+
+BSS responsibilities commonly include:
+
+- Customer management
+- Account management
+- Product and offer management
+- Subscription management
+- Order management
+- Rating and charging
+- Billing
+- Payment processing
+- Disputes and adjustments
+- Collections
+
+OSS responsibilities commonly include:
+
+- Resource management
+- Network inventory
+- Service provisioning
+- Configuration
+- Fault management
+- Performance management
+- Operational service assurance
+
+A useful way to remember the distinction is:
+
+BSS asks, "What does the customer have, what should the customer pay, and what business action is required?"
+
+OSS asks, "How should the requested service be technically delivered and operated?"
+
+BSS and OSS interaction
+
+Consider a fictional customer ordering a new mobile data plan.
+
+1. The customer selects a commercial offer.
+2. BSS creates the appropriate subscription and order.
+3. The order requires technical provisioning.
+4. The relevant operational request is sent toward OSS.
+5. OSS coordinates the required service or network configuration.
+6. The technical service becomes available.
+7. Usage generated by the service can later enter charging and billing processes managed by BSS-related capabilities.
+
+Neither side completely replaces the other. A telecom service requires both a commercial relationship and technical delivery.
+
+4. CUSTOMER, ACCOUNT AND SUBSCRIPTION
+======================================
+
+Customer
+
+A customer represents the person or organization that has a commercial relationship with the telecom provider.
+
+Customer information can include identity and contact information, subject to applicable business and regulatory requirements.
+
+Account
+
+An account represents a financial or organizational context associated with a customer. An account can be used to track balances, charges, payments, credit information, and other financial information.
+
+One customer may have one or more accounts depending on the business model.
+
+Billing account
+
+A billing account is an account used to organize charges and produce billing results for a defined billing relationship. It provides the financial context in which recurring charges, usage charges, discounts, taxes or fees, adjustments, and payments can be managed.
+
+Subscription/service
+
+A subscription represents the customer's active relationship with a particular service or commercial offering. It describes what the customer has subscribed to and can include information such as the selected plan, activation state, start date, validity, and applicable commercial terms.
+
+Relationship between the concepts
+
+A simple conceptual relationship is:
+
+Customer
+  ->
+Account
+  ->
+Subscription
+  ->
+Service usage
+  ->
+Charges
+  ->
+Billing
+
+The exact relationship can vary by telecom business model, but the concepts should not be treated as interchangeable.
+
+Fictional example
+
+A fictional customer named Arun purchases a mobile data plan.
+
+- Arun is the customer.
+- His financial relationship is represented by an account.
+- The mobile data plan is represented by a subscription.
+- The subscription identifies the service and commercial terms.
+- Usage generated by the service can later produce charges.
+- Those charges can be included in the relevant billing account's invoice.
+
+5. PRODUCT, OFFER AND PLAN
+==========================
+
+Product
+
+A product represents a service or commercial item that a telecom provider makes available. It can represent a mobile service, broadband service, messaging service, connectivity service, or another telecom-related offering.
+
+Commercial offer
+
+An offer defines how a product is presented commercially to a customer. An offer can contain pricing, eligibility rules, discounts, validity periods, included allowances, and other commercial conditions.
+
+Service plan
+
+A service plan describes the service package and its applicable commercial characteristics. For example, a fictional mobile plan could include monthly data, voice minutes, and messaging allowances.
+
+Pricing
+
+Pricing defines the monetary rules associated with an offer or service. Pricing can include recurring amounts, usage rates, one-time charges, discounts, or other applicable financial rules.
+
+Allowances
+
+An allowance is an included quantity that can be consumed before additional or overage charging may apply.
+
+Examples include:
+
+- Included data volume
+- Included voice duration
+- Included number of messages
+
+Discounts
+
+A discount reduces an applicable charge according to defined business rules.
+
+Examples include:
+
+- Promotional discount
+- Percentage discount
+- Fixed-amount discount
+- Bundle-related discount
+
+Eligibility
+
+Eligibility determines whether a customer, account, subscription, location, or other condition qualifies for an offer.
+
+Validity
+
+Validity defines the period during which an offer, price, discount, or other commercial rule is applicable.
+
+Fictional example
+
+A fictional "Data Plus" offer has these characteristics:
+
+- Monthly recurring price: 25 currency units
+- Included data: 30 GB
+- Additional data: charged according to an overage rule
+- Promotional discount: 5 currency units for the first three billing periods
+- Validity of promotion: three billing periods
+- Eligibility: available to customers meeting a defined commercial condition
+
+The offer is therefore more than just a price. It is a collection of commercial rules that determine what the customer receives and how the service is charged.
+
+6. ORDER MANAGEMENT
+===================
+
+Order management is the process of receiving, validating, tracking, and completing customer requests for products or services.
+
+Common telecom orders include:
+
+- New service activation
+- Plan change
+- Add-on purchase
+- Service suspension
+- Service restoration
+- Service termination
+- Changes to customer or subscription information
+
+New service activation
+
+A new-service order starts the process of creating a new subscription and making the corresponding service available.
+
+Plan change
+
+A plan-change order changes the commercial characteristics of an existing subscription. Depending on the rules, the change may take effect immediately or at a defined future point.
+
+Add-on purchase
+
+An add-on order adds an additional service, allowance, or feature to an existing subscription.
+
+Suspension
+
+A suspension temporarily restricts service according to applicable business rules. A suspension is different from permanent termination because the relationship may remain active and the service can potentially be restored.
+
+Termination
+
+Termination ends a subscription or service relationship according to applicable rules.
+
+Basic order lifecycle
+
+A conceptual order lifecycle can be:
+
+1. Order creation
+2. Order validation
+3. Eligibility or availability checks
+4. Order decomposition or fulfillment planning
+5. Technical or business fulfillment
+6. Status updates
+7. Completion or failure
+
+BSS and OSS interaction
+
+BSS generally captures the commercial order and customer intent. If the order requires technical changes, BSS-related order processes can interact with OSS capabilities to request provisioning or other operational actions.
+
+For example, a customer requests a new broadband service. BSS records the order and commercial terms. Technical fulfillment may require OSS processes to allocate resources and configure the service. The order can be marked complete when the required business and technical steps have successfully finished.
+
+7. MEDIATION
+===========
+
+Mediation is a processing layer that receives usage or event information from different sources and prepares it for downstream systems such as charging, rating, billing, analytics, or assurance.
+
+Mediation is needed because usage information can originate from different network elements, platforms, or operational sources. These sources may produce records with different formats, fields, identifiers, timestamps, or representations.
+
+A conceptual mediation process can include:
+
+Collection
+
+Mediation receives usage records or event information from source systems.
+
+Parsing
+
+The incoming record is interpreted so that its fields and structure can be understood.
+
+Validation
+
+The record is checked for required fields, valid values, acceptable timestamps, identifiers, and other defined conditions.
+
+Normalization
+
+Different source representations are converted into a consistent internal representation.
+
+Enrichment
+
+Additional information may be added when required for downstream processing. For example, a technical identifier can be associated with a relevant service or commercial context.
+
+Correlation
+
+Related events can be associated when downstream processing requires them to be considered together.
+
+Duplicate handling
+
+Duplicate records must be detected and handled according to defined processing rules so that the same usage is not incorrectly charged more than once.
+
+Routing
+
+Validated records are directed to the appropriate downstream processing path.
+
+Error handling
+
+Records that fail validation or processing can be rejected, quarantined, retried, or sent to an error-handling process depending on the design.
+
+Mediation is not the same as rating. Mediation primarily prepares and manages usage information. Rating determines the applicable monetary value of usage.
+
+Fictional example
+
+A network produces a data-usage record containing a subscriber identifier, start time, end time, and volume. The mediation layer validates the record, converts the source-specific representation into a common format, adds required context, checks for duplicates, and routes the usable record toward charging or rating processing.
+
+8. USAGE EVENTS AND USAGE RECORDS
+=================================
+
+A usage event represents an occurrence in which a telecom service is consumed or an event occurs that may have commercial significance.
+
+Voice usage
+
+A voice event can represent a call. Information may include the originating and destination identifiers, start time, duration, and relevant service context.
+
+SMS usage
+
+An SMS event represents a message transaction. Relevant information can include source and destination identifiers, timestamp, message-related attributes, and service context.
+
+Data usage
+
+A data event represents consumption of network data. A usage record can contain information such as the subscriber or service identifier, timestamp, direction, and consumed volume.
+
+Roaming usage
+
+Roaming usage occurs when a subscriber uses services outside the normal home network environment. Such usage can require additional context because charging rules may depend on the visited environment, destination, service type, and commercial agreement.
+
+International usage
+
+International usage can refer to services involving international destinations or international service contexts. Pricing can differ from domestic usage.
+
+Typical information in a usage record
+
+A usage record may contain:
+
+- Usage record identifier
+- Subscriber or service identifier
+- Event type
+- Start timestamp
+- End timestamp or duration
+- Quantity or volume
+- Source or origin
+- Destination
+- Network or service context
+- Location-related information where applicable
+- Processing status
+- Correlation identifiers
+
+The exact fields depend on the service and system design.
+
+Why usage records matter
+
+Usage records provide evidence of service consumption. They are important inputs for charging and billing because the financial result often depends on what service was used, when it was used, how much was used, and under which customer or subscription context.
+
+Poor-quality usage records can cause incorrect charging, missing revenue, duplicate charges, or reconciliation problems.
+
+9. RATING
+=========
+
+Rating is the process of determining the monetary value applicable to a usage event according to defined charging rules and customer or subscription context.
+
+The key distinction is:
+
+Rating = determining the applicable monetary value.
+
+Rating uses information from the usage event and relevant commercial rules.
+
+Important rating inputs can include:
+
+Usage quantity
+
+The amount of a service consumed.
+
+Duration
+
+For time-based services such as voice, duration can affect the charge.
+
+Volume
+
+For data services, consumed data volume can affect the charge.
+
+Destination
+
+The destination of a call, message, or other service can affect pricing.
+
+Time-based pricing
+
+Some offers use different rates during different time periods.
+
+Customer or subscription context
+
+The applicable price can depend on the customer's subscribed plan, service, eligibility, or other commercial context.
+
+Allowances
+
+An included allowance can absorb some or all usage before a monetary charge is produced.
+
+Discounts
+
+A discount can reduce the calculated charge when its conditions are satisfied.
+
+Rounding
+
+Usage or monetary values may be rounded according to defined rules. Rounding must be applied consistently because it can affect the final amount.
+
+Minimum and maximum charge concepts
+
+A service can have a minimum charge even for a small amount of usage, or a charge can be subject to a maximum defined by the commercial rules.
+
+Fictional rating example: voice
+
+Suppose a fictional plan charges 0.10 currency units per minute after the included voice allowance has been consumed.
+
+A customer makes a 6-minute call. If 4 minutes remain in the allowance, only the applicable 2 minutes may become chargeable.
+
+Chargeable duration = 6 - 4 = 2 minutes.
+
+Rated value = 2 × 0.10 = 0.20 currency units.
+
+Fictional rating example: data
+
+Suppose a fictional service charges 2 currency units per GB after an included allowance.
+
+A customer consumes 5 GB and has 3 GB remaining in the allowance.
+
+Chargeable volume = 5 - 3 = 2 GB.
+
+Rated value = 2 × 2 = 4 currency units.
+
+The actual commercial rules of a real telecom service can be significantly more complex. The examples above are intentionally simple.
+
+Rating should not be confused with billing. Rating evaluates an individual usage event or usage quantity according to applicable rules. Billing later consolidates financial items for a billing period.
+
+10. CHARGING
+============
+
+Charging is the process of applying or enforcing a charge against the relevant financial or balance context.
+
+The key distinction is:
+
+Rating = determining the applicable monetary value.
+
+Charging = applying or enforcing the resulting charge against the relevant financial/balance context.
+
+Rating can therefore be viewed as answering:
+
+"How much is this usage worth under the applicable rules?"
+
+Charging answers:
+
+"How should that resulting amount affect the customer's balance, account, or financial context?"
+
+Charging can involve:
+
+- Applying a monetary amount
+- Consuming an allowance
+- Reducing a prepaid balance
+- Reserving or authorizing value
+- Recording a charge
+- Updating the relevant financial state
+
+Real-time charging
+
+In real-time charging, the system interacts with a usage event while service consumption is occurring or before it is authorized. The system may check available balance or allowance, determine the applicable charging conditions, authorize usage, and update the financial state.
+
+Fictional example
+
+A customer has 10 currency units in a prepaid balance. A data session is requested. The charging process checks whether sufficient balance or allowance is available and authorizes the service according to the applicable rules. As usage occurs, the relevant value is applied to the customer's financial context.
+
+Charging is broader than simply multiplying a quantity by a rate. It includes the application of the monetary result to a balance or account and may include authorization and balance management.
+
+11. ONLINE VS OFFLINE CHARGING
+==============================
+
+Online charging
+
+Online charging involves real-time interaction between the service usage process and charging capabilities.
+
+Typical activities can include:
+
+- Checking balance
+- Checking remaining allowance
+- Determining whether usage can be authorized
+- Applying or reserving value
+- Updating balance
+- Controlling continued usage
+
+Online charging is particularly important for prepaid services because service authorization may depend directly on available value.
+
+Fictional prepaid example
+
+A customer has 5 currency units available. The customer begins a service session. The charging capability checks the available value and applicable allowance. If the customer is authorized to use the service, the relevant balance is reserved or consumed according to the charging model.
+
+Offline charging
+
+Offline charging processes usage after the service event has occurred.
+
+A simplified flow is:
+
+Network/service usage
+  ->
+Usage record
+  ->
+Mediation
+  ->
+Rating
+  ->
+Charge generation
+  ->
+Billing
+
+Offline charging is commonly associated with postpaid scenarios because the customer can consume the service first and receive a bill later.
+
+Fictional postpaid example
+
+A customer uses 2 GB of data during a day. A usage record is produced and processed through mediation. The usage is rated according to the customer's plan. The resulting charge is stored and later included in the billing period.
+
+Simple comparison
+
+Online charging:
+- Real-time or near-real-time interaction
+- Balance and allowance checks
+- Usage authorization
+- Immediate financial-state impact or reservation
+- Strongly relevant to prepaid
+
+Offline charging:
+- Usage processed after the event
+- Usage records are important
+- Mediation and rating occur after usage
+- Charges are accumulated
+- Strongly relevant to postpaid
+
+The terms describe charging approaches rather than an absolute rule that one approach can only be used with one customer type.
+
+12. PREPAID VS POSTPAID
+=======================
+
+Prepaid
+
+In a prepaid model, the customer generally provides value before consuming chargeable service. The available balance or allowance can influence whether additional usage is authorized.
+
+Important characteristics include:
+
+- Balance is available before usage
+- Usage can be authorized against available value
+- Real-time charging is often important
+- Service may be restricted when usable value is exhausted
+
+Fictional example
+
+Maya has a prepaid balance of 20 currency units. She consumes a service that costs 3 currency units. The charging process applies the charge, leaving an applicable balance of 17 currency units, subject to the exact charging and balance rules.
+
+Postpaid
+
+In a postpaid model, the customer generally consumes service during a billing period and receives a bill afterward.
+
+Important characteristics include:
+
+- Usage is accumulated during the billing period
+- Charges are generally consolidated later
+- Offline usage processing is commonly important
+- An invoice is generated for the applicable period
+- Payment is generally made after billing
+
+Fictional example
+
+Ravi uses voice and data services throughout April. The applicable usage is processed and rated. Recurring charges and other financial items are added. At the end of the billing process, an invoice is generated showing the amount due.
+
+Key differences
+
+Prepaid:
+- Value is generally available before consumption
+- Real-time balance control is important
+- Charging can directly control authorization
+
+Postpaid:
+- Consumption generally precedes payment
+- Charges accumulate during a billing period
+- Billing and invoice generation are central
+
+A telecom environment can support both models, and some services can use hybrid approaches.
+
+13. BILLING
+==========
+
+Billing is the process of consolidating applicable financial items for a billing period and producing the customer's bill or invoice.
+
+The key distinction is:
+
+Rating determines the charge for an individual usage event.
+
+Billing consolidates applicable financial items for a billing period and produces the customer's bill/invoice.
+
+Billing inputs can include:
+
+- Rated usage charges
+- Recurring charges
+- One-time charges
+- Add-on charges
+- Discounts
+- Adjustments
+- Taxes or fees as applicable
+- Previous balances
+- Payments or credits depending on the billing model
+
+Rated charges
+
+Rated usage events produce monetary values that can later become billing items.
+
+Charge aggregation
+
+Multiple charges can be grouped according to the billing account, subscription, service, charge type, or other business rules.
+
+Recurring charges
+
+Recurring charges are applied periodically according to the subscription or commercial agreement.
+
+One-time charges
+
+One-time charges are applied for a specific event or transaction, such as activation or installation.
+
+Usage charges
+
+Usage charges arise from consumption of services such as voice, SMS, or data.
+
+Discounts
+
+Discounts reduce eligible charges according to applicable commercial rules.
+
+Adjustments
+
+Adjustments correct or modify financial results when a business or billing correction is required.
+
+Taxes and fees
+
+Taxes and regulatory or service-related fees may be added according to applicable rules. Their treatment depends on the jurisdiction and commercial model.
+
+Invoice generation
+
+After applicable financial items have been processed and consolidated, the billing process generates an invoice containing the amount due and relevant details.
+
+Fictional example
+
+During a billing period, a customer has:
+
+- Monthly plan charge: 25 currency units
+- Data usage charge: 4 currency units
+- Add-on: 5 currency units
+- Discount: 3 currency units
+
+Before other applicable items, the financial total is:
+
+25 + 4 + 5 - 3 = 31 currency units.
+
+Billing is responsible for bringing these financial items together for the billing period. Rating alone would not perform this complete consolidation.
+
+14. TYPES OF TELECOM CHARGES
+============================
+
+Usage-based charges
+
+A charge based on the amount of service consumed.
+
+Example: A customer is charged according to the number of data units consumed beyond an included allowance.
+
+Voice charges
+
+Charges associated with voice service usage.
+
+Example: A customer incurs a charge for chargeable voice minutes after using the included voice allowance.
+
+SMS charges
+
+Charges associated with message usage.
+
+Example: An SMS sent after the included message allowance is exhausted generates a charge.
+
+Data charges
+
+Charges associated with data consumption.
+
+Example: A customer is charged for additional data volume beyond the plan allowance.
+
+Recurring charges
+
+Charges that repeat at defined intervals.
+
+Example: A monthly mobile plan produces a recurring charge each billing period.
+
+One-time charges
+
+Charges applied once for a specific event.
+
+Example: A new service activation produces a one-time activation charge.
+
+Activation charges
+
+Charges associated with starting a service.
+
+Example: A fictional provider charges 8 currency units when a new broadband subscription is activated.
+
+Installation charges
+
+Charges associated with installation activity.
+
+Example: A broadband installation request produces a one-time installation charge.
+
+Add-on charges
+
+Charges for an additional feature or service attached to an existing subscription.
+
+Example: A customer purchases an extra data package for 4 currency units.
+
+Bundle charges
+
+Charges associated with a packaged collection of services or allowances.
+
+Example: A bundle contains voice and data components under a single commercial price.
+
+Overage charges
+
+Charges for usage beyond an included allowance.
+
+Example: A customer uses more data than the monthly included volume and pays for the excess.
+
+Roaming charges
+
+Charges associated with usage while roaming.
+
+Example: A customer uses mobile data while outside the home network environment and incurs a roaming-related charge.
+
+International charges
+
+Charges associated with international service usage or destinations.
+
+Example: A call to an international destination is charged using an international rate.
+
+Device-related charges
+
+Charges associated with a device transaction or arrangement.
+
+Example: A customer purchases a device through a telecom commercial arrangement and incurs a device installment or one-time charge.
+
+Premium or special service charges
+
+Charges for services that have special or premium pricing.
+
+Example: A customer uses a separately priced special service and receives a corresponding charge.
+
+15. BILLING CYCLE AND INVOICE
+=============================
+
+A billing cycle is the recurring schedule used to produce billing results for customers or accounts.
+
+A billing period is the specific interval for which charges are considered in a particular bill.
+
+For example, a fictional customer could have a billing period from the first day through the last day of a month.
+
+Bill run
+
+A bill run is the processing activity that evaluates applicable financial items for a billing cycle and produces billing results.
+
+Invoice generation
+
+Invoice generation creates the formal billing document or record representing the amount owed for the billing period.
+
+Invoice date
+
+The invoice date identifies when the invoice is issued or generated.
+
+Due date
+
+The due date identifies when payment is expected according to the applicable terms.
+
+Previous balance
+
+The previous balance represents an amount carried from an earlier period, if applicable.
+
+Current charges
+
+Current charges represent financial items generated for the current billing period.
+
+Discounts
+
+Discounts reduce eligible charges.
+
+Adjustments
+
+Adjustments modify the financial result to correct or otherwise change an amount according to authorized rules.
+
+Taxes and fees
+
+Applicable taxes or fees may be included in the final invoice.
+
+Amount due
+
+The amount due represents the amount the customer is expected to pay after considering applicable charges, credits, adjustments, previous balances, and other financial items.
+
+Typical invoice information can include:
+
+- Customer information
+- Billing account information
+- Invoice number
+- Invoice date
+- Billing period
+- Due date
+- Recurring charges
+- Usage charges
+- Add-ons
+- Discounts
+- Adjustments
+- Taxes or fees
+- Previous balance
+- Payments or credits
+- Total amount
+- Amount due
+
+A telecom invoice is therefore a financial summary of the customer's applicable billing activity for a defined period.
+
+16. PAYMENT
+===========
+
+Payment is the process through which a customer provides money or financial value to settle an amount owed.
+
+Payment initiation
+
+The customer or an authorized party initiates a payment using an available payment method.
+
+Payment authorization or confirmation
+
+The payment mechanism determines whether the transaction is authorized or otherwise successfully confirmed.
+
+Payment recording
+
+The billing or financial system records the payment with relevant transaction information.
+
+Payment allocation
+
+Allocation determines which outstanding financial items should be settled by the payment.
+
+Account balance update
+
+After successful recording and allocation, the relevant financial balance is updated.
+
+Payment failure
+
+A payment can fail because of insufficient funds, authorization failure, technical problems, invalid information, or other reasons.
+
+Full payment
+
+A full payment covers the applicable amount due.
+
+Fictional example:
+
+An invoice shows 50 currency units due. The customer successfully pays 50 currency units. The payment is recorded and allocated against the outstanding invoice, leaving no remaining amount for that invoice.
+
+Partial payment
+
+A partial payment is less than the amount currently due.
+
+Example:
+
+An invoice is 50 currency units, but the customer pays 30. The remaining amount is 20 currency units, subject to applicable rules.
+
+Unallocated payment
+
+An unallocated payment is a successfully received payment that has not yet been assigned to a specific outstanding item.
+
+Example:
+
+A customer pays 40 currency units but the system cannot immediately determine which invoice should receive the payment. The payment may temporarily remain unallocated.
+
+Overpayment
+
+An overpayment occurs when the received amount exceeds the amount required to settle the applicable obligation.
+
+Example:
+
+A customer owes 50 currency units but pays 60. The additional 10 currency units may become a credit or remain as an unapplied amount according to business rules.
+
+Payment is therefore not just the receipt of money. Correct recording and allocation are important for maintaining an accurate financial state.
+
+17. DISPUTE AND ADJUSTMENT
+==========================
+
+DISPUTE
+
+A billing dispute occurs when a customer questions or challenges a charge, invoice amount, or other billing result.
+
+Common reasons include:
+
+- Customer believes a charge is incorrect
+- Usage appears higher than expected
+- A discount was not applied
+- A payment was not reflected
+- A service was billed after a cancellation
+- A charge appears duplicated
+
+Dispute lifecycle
+
+A conceptual dispute lifecycle is:
+
+1. Customer raises a dispute.
+2. The dispute is recorded.
+3. The disputed item is identified.
+4. Relevant information is investigated.
+5. The result is determined.
+6. A correction may be made if required.
+7. The customer is informed of the outcome.
+8. The dispute is closed.
+
+Investigation can involve checking usage records, rating results, billing items, payments, adjustments, and other relevant information.
+
+Resolution
+
+A dispute can be resolved in different ways. The charge may be confirmed as correct, corrected, partially corrected, or otherwise handled according to applicable business rules.
+
+Customer communication
+
+The customer should receive an appropriate explanation of the dispute outcome according to the provider's process.
+
+ADJUSTMENT
+
+An adjustment is a financial modification made to correct, compensate, or otherwise change a billing-related amount.
+
+Why adjustments are required
+
+Adjustments may be required because of:
+
+- Billing errors
+- Incorrect charges
+- Missing discounts
+- Approved customer compensation
+- Dispute resolution
+- Corrections to previous financial results
+
+Credit adjustment
+
+A credit adjustment reduces the amount owed or creates a credit.
+
+Example:
+
+A customer was incorrectly charged 10 currency units. An approved credit adjustment of 10 currency units corrects the financial result.
+
+Debit adjustment
+
+A debit adjustment increases the amount owed.
+
+Example:
+
+A valid charge was omitted from an earlier billing result and an authorized debit adjustment is made to correct the account.
+
+Billing correction
+
+A billing correction changes an incorrect financial result to the correct value.
+
+Dispute-related adjustment
+
+A dispute can result in an adjustment when the investigation confirms that a financial correction is appropriate.
+
+Auditability
+
+Adjustments should be traceable. A reliable process records why the adjustment was made, what amount was changed, when it occurred, and which authorized process or user initiated it.
+
+Difference between dispute and adjustment
+
+A dispute is a customer's challenge or a process for investigating a questioned financial result.
+
+An adjustment is the financial action that changes an amount.
+
+A dispute does not automatically mean that an adjustment must be made. Investigation determines the appropriate outcome.
+
+18. COLLECTIONS
+================
+
+Collections is the process of managing unpaid or overdue financial obligations.
+
+Collections becomes relevant when an invoice or other amount remains unpaid after its expected payment date.
+
+Overdue invoices
+
+An invoice becomes overdue when the required payment has not been received by the applicable due date.
+
+Payment reminders
+
+A collection process may issue reminders requesting payment.
+
+Escalation
+
+If payment remains outstanding, the case may move through increasingly serious collection stages.
+
+Account or service restrictions
+
+Depending on applicable policies, continued non-payment may lead to restrictions on an account or service. Such actions are governed by business and regulatory rules.
+
+Collection lifecycle
+
+A conceptual lifecycle can be:
+
+Invoice generated
+  ->
+Due date
+  ->
+Payment received?
+  ->
+Yes: settle or allocate payment
+  ->
+No: overdue
+  ->
+Reminder
+  ->
+Further escalation
+  ->
+Applicable account or service action
+  ->
+Payment or final resolution
+
+Relationship between billing, payment, and collections
+
+Billing determines and produces the amount due.
+
+Payment records money received against that obligation.
+
+Collections manages unpaid obligations when payment is not received as expected.
+
+These processes are therefore closely connected but have different responsibilities.
+
+Fictional example
+
+A customer's invoice is 80 currency units with a due date of June 15. No successful payment is recorded by the due date. The amount becomes overdue. A reminder is issued. If payment still does not arrive, the account can move through additional collection stages according to the applicable policy.
+
+19. REVENUE ASSURANCE AND RECONCILIATION
+========================================
+
+Revenue assurance
+
+Revenue assurance is the discipline of identifying and reducing problems that can cause expected telecom revenue to be lost, misstated, duplicated, or incorrectly processed.
+
+Its purpose is to help ensure that services consumed by customers are correctly represented through charging, billing, and related financial processes.
+
+Potential sources of revenue leakage include:
+
+- Missing usage
+- Incorrect rating
+- Incorrect billing
+- Integration failures
+- Duplicate transactions
+- Missing transactions
+- Incorrect configuration of commercial rules
+- Failed processing
+- Mismatches between systems
+
+Missing usage
+
+If a valid usage event is lost before reaching charging or billing, the provider may fail to collect revenue that should have been generated.
+
+Incorrect rating
+
+If the wrong price or charging rule is applied, the resulting revenue can be too high or too low.
+
+Incorrect billing
+
+Even when individual usage events are correctly rated, billing errors can cause incorrect financial results.
+
+Integration failures
+
+Failures between systems can prevent transactions from reaching their intended destination.
+
+Duplicate transactions
+
+A duplicated usage or financial transaction can cause a customer to be charged more than once or cause financial reporting discrepancies.
+
+Reconciliation
+
+Reconciliation is the systematic comparison of information from two or more sources to identify differences and determine whether the differences are expected or require investigation.
+
+Why reconciliation matters
+
+Reconciliation helps detect:
+
+- Missing transactions
+- Duplicate transactions
+- Incorrect amounts
+- Processing failures
+- Timing differences
+- Unallocated payments
+- Data synchronization problems
+
+Usage vs billing comparison
+
+A provider can compare expected usage-related financial results with the usage charges appearing in billing.
+
+Example:
+
+A set of valid usage records indicates 1,000 chargeable events. Billing contains financial results for only 990 events. The 10-event difference becomes an investigation item.
+
+Billing vs payment comparison
+
+Billing records can be compared with received payments to determine whether expected financial obligations are being settled correctly.
+
+Payment system vs internal records
+
+External payment results can be compared with internal payment records to identify missing, duplicate, failed, or incorrectly recorded transactions.
+
+Simple fictional example
+
+Suppose a fictional telecom business receives 500 payment confirmations from a payment channel for a particular processing period. Internal records show only 498 successful payments. Reconciliation identifies a difference of two payments. The two transactions can then be investigated to determine whether they failed to enter the internal system, were duplicated, were delayed, or were otherwise handled incorrectly.
+
+Revenue assurance and reconciliation are related but not identical.
+
+Revenue assurance is the broader discipline of protecting revenue and identifying leakage.
+
+Reconciliation is a comparison technique used to identify mismatches between sources.
+
+20. END-TO-END TELECOM BSS FLOW
+==============================
+
+A simplified end-to-end conceptual flow is:
+
+Customer
+  ->
+Account / Subscription
+  ->
+Product / Plan
+  ->
+Service Usage
+  ->
+Network Event
+  ->
+Mediation
+  ->
+Rating
+  ->
+Charging
+  ->
+Charge Record
+  ->
+Billing
+  ->
+Invoice
+  ->
+Payment
+  ->
+Reconciliation
+
+The stages can be understood as follows.
+
+Customer
+
+The customer has a commercial relationship with the telecom provider.
+
+Account / Subscription
+
+The customer's financial context and active services are established.
+
+Product / Plan
+
+The customer subscribes to a product or plan containing commercial rules such as pricing, allowances, discounts, and validity.
+
+Service Usage
+
+The customer consumes a service.
+
+Network Event
+
+The service consumption produces an event or usage information representing what happened.
+
+Mediation
+
+Usage information is collected, parsed, validated, normalized, enriched where required, checked for duplicates, and routed.
+
+Rating
+
+The usage is evaluated against applicable pricing and commercial rules to determine its monetary value.
+
+Charging
+
+The resulting value is applied or enforced against the relevant balance or financial context.
+
+Charge Record
+
+The resulting financial information is recorded for downstream processing.
+
+Billing
+
+Applicable charges and other financial items are consolidated for the billing period.
+
+Invoice
+
+An invoice is generated showing the financial result and amount due.
+
+Payment
+
+The customer pays the applicable amount, and the payment is recorded and allocated.
+
+Reconciliation
+
+Financial and transaction information is compared across relevant sources to identify mismatches.
+
+Exception and correction paths
+
+Invoice
+  ->
+Dispute
+  ->
+Investigation
+  ->
+Adjustment
+
+An invoice can be questioned by a customer. The disputed item is investigated. If the investigation identifies a financial error or an approved correction, an adjustment can be applied.
+
+Invoice
+  ->
+Non-payment
+  ->
+Collections
+
+If an invoice remains unpaid after the due date, the obligation can enter collections.
+
+Transaction
+  ->
+Failure
+  ->
+Retry
+  ->
+Reprocessing
+
+A failed transaction may be retried. If necessary, the transaction can be reprocessed through the appropriate processing path. Controls are required to avoid creating duplicates during retry or reprocessing.
+
+Fictional end-to-end example
+
+Consider a fictional customer named Neha who subscribes to a mobile plan called "Smart 30".
+
+The plan has:
+
+- Monthly recurring charge: 30 currency units
+- Included data: 20 GB
+- Additional data: 2 currency units per GB
+- Promotional discount: 5 currency units for the first billing period
+
+Customer and subscription
+
+Neha becomes a customer and subscribes to Smart 30. An account and subscription are created with the applicable commercial terms.
+
+Service usage
+
+During the billing period, Neha consumes 23 GB of data.
+
+Network event and mediation
+
+The network generates usage information representing the data consumption. Mediation receives the information, validates the record, normalizes the required fields, checks for duplicates, and routes it downstream.
+
+Rating
+
+Neha has 20 GB included. Three GB are chargeable.
+
+Chargeable data = 23 GB - 20 GB = 3 GB.
+
+At 2 currency units per GB:
+
+Usage charge = 3 × 2 = 6 currency units.
+
+Charging
+
+The applicable 6 currency units are applied according to the charging model and customer financial context.
+
+Billing
+
+At the end of the billing period, billing consolidates:
+
+- Recurring charge: 30 currency units
+- Usage charge: 6 currency units
+- Promotional discount: -5 currency units
+
+Subtotal before any other applicable taxes or fees:
+
+30 + 6 - 5 = 31 currency units.
+
+Invoice
+
+An invoice is generated showing the billing period, applicable charges, discount, and amount due.
+
+Payment
+
+Neha pays 31 currency units. The payment is confirmed, recorded, and allocated against the outstanding invoice.
+
+Reconciliation
+
+The payment and billing records are compared with the relevant transaction source. If the records agree, the transaction is considered reconciled. If a mismatch exists, it becomes an investigation item.
+
+Possible exception
+
+Suppose the invoice incorrectly shows 8 currency units of data usage instead of 6. Neha raises a dispute. The investigation checks the usage quantity, allowance, rating result, and billing item. If the investigation confirms the error, an appropriate credit adjustment can correct the financial result.
+
+This example demonstrates the difference between the major concepts:
+
+- The customer owns the commercial relationship.
+- The subscription represents the selected service.
+- Usage represents consumption.
+- Mediation prepares usage information.
+- Rating determines the monetary value.
+- Charging applies the financial impact.
+- Billing consolidates financial items.
+- The invoice communicates the amount due.
+- Payment settles the obligation.
+- Reconciliation checks consistency between records.
+- A dispute challenges a financial result.
+- An adjustment changes the financial result when correction is required.
+- Collections manages unpaid obligations.
+
+FINAL TERMINOLOGY SUMMARY
+=========================
+
+BSS
+Business Support Systems are business-facing capabilities used to manage customers, products, subscriptions, orders, charging, billing, payments, and related commercial processes.
+
+OSS
+Operations Support Systems are operational capabilities used to manage network and service resources, provisioning, configuration, faults, performance, and service operations.
+
+Customer
+A customer is a person or organization having a commercial relationship with a telecom provider.
+
+Account
+An account is a financial or organizational context used to manage charges, payments, balances, or related information.
+
+Subscription
+A subscription represents a customer's active relationship with a particular service or commercial offering.
+
+Product
+A product represents a telecom service or commercial item made available to customers.
+
+Offer
+An offer defines the commercial conditions under which a product or service is presented, including pricing, eligibility, allowances, discounts, and validity.
+
+Usage Event
+A usage event represents consumption of a telecom service or another event that may have commercial significance.
+
+Mediation
+Mediation collects and prepares usage information through activities such as parsing, validation, normalization, enrichment, correlation, duplicate handling, routing, and error processing.
+
+Rating
+Rating determines the monetary value applicable to an individual usage event or usage quantity according to defined rules.
+
+Charging
+Charging applies or enforces the resulting charge against the relevant balance or financial context.
+
+Billing
+Billing consolidates applicable financial items for a billing period and produces the customer's bill or invoice.
+
+Invoice
+An invoice is the billing record or document that communicates the financial result and amount due for a defined billing period.
+
+Payment
+Payment is the receipt and processing of money or financial value intended to settle an outstanding obligation.
+
+Balance
+A balance represents the financial value available, owed, credited, or otherwise maintained for a relevant account or customer context.
+
+Allowance
+An allowance is an included quantity of service that can be consumed under a plan before additional charging may apply.
+
+Overage
+Overage is usage beyond an included allowance that becomes chargeable according to the applicable rules.
+
+Dispute
+A dispute is a customer challenge or investigation concerning a billing or financial result.
+
+Adjustment
+An adjustment is an authorized financial modification used to correct, compensate, or otherwise change a billing-related amount.
+
+Collections
+Collections is the process of managing overdue or unpaid financial obligations.
+
+Revenue Assurance
+Revenue assurance is the discipline of identifying and reducing revenue leakage, incorrect financial processing, missing transactions, duplicate transactions, and related problems.
+
+Reconciliation
+Reconciliation compares records from two or more sources to identify and investigate mismatches.
+
+Prepaid
+Prepaid is a service model in which value is generally provided before consumption and available balance or allowance can influence service authorization.
+
+Postpaid
+Postpaid is a service model in which customers generally consume services during a billing period and receive an invoice afterward.
+
+Online Charging
+Online charging uses real-time or near-real-time interaction to check value or allowance, authorize usage, and apply or reserve financial value.
+
+Offline Charging
+Offline charging processes usage after the service event, commonly using usage records, mediation, rating, charge generation, and subsequent billing.
+
