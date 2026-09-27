@@ -7,3 +7,4 @@ class AgentState(TypedDict):
     answer: str
     retrieval_query: str
     blocked: bool
+    retrieved_documents: list

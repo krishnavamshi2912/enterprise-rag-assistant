@@ -25,6 +25,10 @@ class Settings:
     # Portkey LLM configuration 
     PORTKEY_API_KEY = get_required_env("PORTKEY_API_KEY")
     PORTKEY_PROVIDER = get_required_env("PORTKEY_PROVIDER")
+
+    # Portkey LLM Evaluator Judge configuration 
+    PORTKEY_LLM_JUDGE = get_required_env("LLM_EVALUATOR_PROVIDER")
+    LLM_JUDGE_MODEL = "openai/gpt-oss-20b"
     
     # Guard Model 
     GUARD_MODEL = "openai/gpt-oss-safeguard-20b"

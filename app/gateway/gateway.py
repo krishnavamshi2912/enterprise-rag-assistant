@@ -29,3 +29,14 @@ def get_gateway_guardrail_llm() -> ChatOpenAI:
         model=setting.GUARD_MODEL,
         default_headers=headers,
     )
+
+def get_gateway_evaluator_llm() -> ChatOpenAI:
+    """Return the evaluator chat model routed through Portkey."""
+    logger.info("Routing evaluator LLM through Portkey | provider=%s | model=%s",setting.PORTKEY_LLM_JUDGE,setting.LLM_JUDGE_MODEL,)
+    headers = createHeaders(api_key=setting.PORTKEY_API_KEY,provider=setting.PORTKEY_LLM_JUDGE,)
+    return ChatOpenAI(
+        api_key="portkey",
+        base_url=PORTKEY_GATEWAY_URL,
+        model=setting.LLM_JUDGE_MODEL,
+        default_headers=headers,
+    )

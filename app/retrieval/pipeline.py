@@ -70,7 +70,8 @@ def ask(graph, question: str) -> str:
             "retrieval_query": "",
             "context": "",
             "answer": "",
-            "blocked": False
+            "blocked": False,
+            "retrieved_documents": []
         })
 
         answer = response["answer"]

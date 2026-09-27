@@ -58,4 +58,4 @@ def retriever_node(state: dict, retriever) -> dict:
         len(context),
     )
 
-    return {"context": context}
+    return {"context": context, "retrieved_documents": reranked_documents}
