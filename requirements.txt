@@ -1,0 +1,26 @@
+# Backend
+fastapi==0.136.3                 # API framework
+uvicorn==0.48.0                  # ASGI server for FastAPI
+
+# Frontend
+streamlit==1.59.2                # Web UI
+
+# Configuration & Validation
+python-dotenv==1.2.2             # Loads environment variables from .env
+pydantic==2.13.4                 # Data validation
+requests==2.34.2                 # HTTP requests
+
+# LangChain & LangGraph
+langchain-community==0.4.2       # Community loaders and integrations
+langchain-openai==1.3.5          # OpenAI-compatible LLM integration
+langchain-qdrant==1.1.0          # Qdrant integration for LangChain
+langchain-text-splitters==1.1.2  # Document chunking
+langgraph==1.2.2                 # Workflow orchestration
+langsmith==0.10.6                # Tracing and evaluation
+
+# Vector Database & Retrieval
+qdrant-client==1.18.0            # Qdrant vector database client
+flashrank==0.2.10                # Document reranking
+
+# LLM Gateway
+portkey-ai==2.3.2                # Portkey LLM gateway
