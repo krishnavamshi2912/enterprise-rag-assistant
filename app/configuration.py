@@ -32,6 +32,9 @@ class Settings:
     
     # Guard Model 
     GUARD_MODEL = "openai/gpt-oss-safeguard-20b"
+    GUARD_INPUT_MAX_CHARS = 1500
+    GUARD_OUTPUT_CONTEXT_MAX_CHARS = 1200
+    GUARD_OUTPUT_ANSWER_MAX_CHARS = 800
 
     # JINA Embeddings and models
     JINA_API_KEY = get_required_env("JINA_API_KEY")

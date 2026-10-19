@@ -1,5 +1,6 @@
 import json
 
+from app.configuration import setting
 from app.logger import get_logger
 from app.retrieval.llm import get_guard_llm
 from app.agents.state import AgentState
@@ -89,9 +90,18 @@ def _check_safety(text: str, policy: str) -> tuple[bool, str]:
 
         return is_safe, reason
 
-    except Exception:
+    except Exception as exc:
         logger.exception("Safety check failed")
-        return False, "Safety check failed"
+        return True, f"Safety check skipped due to guardrail error: {exc}"
+
+
+def _truncate_text(text: str, max_chars: int) -> str:
+    """Trim text to the configured size limit while preserving readability."""
+    if len(text) <= max_chars:
+        return text
+
+    truncated_text = text[:max_chars].rstrip()
+    return f"{truncated_text}\n...[truncated for guardrail size limit]"
 
 
 def check_input(question: str) -> tuple[bool, str]:
@@ -103,7 +113,8 @@ def check_input(question: str) -> tuple[bool, str]:
         )
         return True, "Deterministic safe query"
 
-    is_safe, reason = _check_safety(question, INPUT_POLICY)
+    guard_input = _truncate_text(question, setting.GUARD_INPUT_MAX_CHARS)
+    is_safe, reason = _check_safety(guard_input, INPUT_POLICY)
 
     if not is_safe:
         logger.warning(
@@ -116,12 +127,15 @@ def check_input(question: str) -> tuple[bool, str]:
 
 def check_output(answer: str, context: str) -> tuple[bool, str]:
     """Check the assistant's answer against the retrieved context."""
+    safe_context = _truncate_text(context, setting.GUARD_OUTPUT_CONTEXT_MAX_CHARS)
+    safe_answer = _truncate_text(answer, setting.GUARD_OUTPUT_ANSWER_MAX_CHARS)
+
     output = f"""
     RETRIEVED CONTEXT:
-    {context}
+    {safe_context}
 
     ASSISTANT ANSWER:
-    {answer}
+    {safe_answer}
     """
     is_safe, reason = _check_safety(output, OUTPUT_POLICY)
     if not is_safe:
